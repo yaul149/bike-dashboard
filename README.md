@@ -46,23 +46,34 @@ print(df.describe())
 
 # Baca data hour.csv
 df_hour = pd.read_csv("Bike-sharing-dataset/hour.csv")
+
 print("\nDataset hour.csv")
+
 print(df_hour.head(100))
+
 print(df_hour.shape)
 
 # Membaca hour dan day csv
+
 import pandas as pd
 
 # Membaca file day.csv
+
 df_day = pd.read_csv("Bike-sharing-dataset/day.csv")
+
 print("Preview data harian (day.csv):")
+
 print(df_day.head(100))
+
 print("Ukuran data harian:", df_day.shape)
 
 # Membaca file hour.csv
 df_hour = pd.read_csv("Bike-sharing-dataset/hour.csv")
+
 print("\nPreview data per jam (hour.csv):")
+
 print(df_hour.head(100))
+
 print("Ukuran data per jam:", df_hour.shape)
 
 df_day['data_type'] = 'day'
@@ -78,7 +89,9 @@ df_day = df_day[df_hour.columns]
 df_all = pd.concat([df_day, df_hour], ignore_index=True)
 
 print("\nPreview data gabungan:")
+
 print(df_all.head(100))
+
 print("Ukuran data gabungan:", df_all.shape)
 
 **Insight:**
@@ -89,9 +102,14 @@ print("Ukuran data gabungan:", df_all.shape)
  - pada data tersebut musim, cuaca, dan suhu serta beberapa hal lain yang berperngaruh terhadap faktor menigkatnya bisnis.
 ### Assessing Data
 print(df.isnull().sum())
+
 print("Duplicated:", df.duplicated().sum())
+
 **Insight:**
+
 - tidak ada missing data yang terjadi pada 100 baris teratas
+
+
 - tidak ada duplicate data
 
 # Membaca file hour.csv
@@ -102,23 +120,32 @@ df_hour = pd.read_csv("Bike-sharing-dataset/hour.csv")
 
 
 print("Preview data per jam (hour.csv):")
+
 print(df_hour.head(100))
+
 print("\nUkuran data:", df_hour.shape)
 
-
 print("\nInformasi dataset:")
+
 print(df_hour.info())
 
 
 print("\nStatistik deskriptif:")
+
 print(df_hour.describe())
 
 ### Cleaning Data
 mengecek duplikasi pada data
+
 print("Jumlah duplikasi sebelum:", df.duplicated().sum())
+
 df = df.drop_duplicates()
+
+
 print("Jumlah duplikasi sesudah:", df.duplicated().sum())
+
 print(df.isnull().sum())
+
 df = df.dropna()
 
 
@@ -126,7 +153,6 @@ df = df.dropna()
 -  tidak terdapat duplikasi pada data yang di olah
 - hasil dari data bertype integer
 # clening data hour csv
-
 Cek missing values → lihat apakah ada kolom yang kosong.
 
 Cek duplikasi → data jam bisa saja tercatat lebih dari sekali.
@@ -146,19 +172,27 @@ import pandas as pd
 df_hour = pd.read_csv("Bike-sharing-dataset/hour.csv")
 
 print("Preview awal:")
+
 print(df_hour.head())
 
 
 print("\nCek missing values:")
+
 print(df_hour.isnull().sum())
+
 print("\nJumlah duplikasi:", df_hour.duplicated().sum())
 
+
+
 df_hour = df_hour.drop_duplicates()
+
 df_hour = df_hour.fillna(df_hour.median(numeric_only=True))
+
 df_hour['dteday'] = pd.to_datetime(df_hour['dteday'])
 
 
 print("\nCek ulang missing values:")
+
 print(df_hour.isnull().sum())
 
 print("\nJumlah duplikasi setelah dibersihkan:", df_hour.duplicated().sum())
@@ -168,7 +202,6 @@ print(df_hour.info())
 
 ## Exploratory Data Analysis (EDA)
 ### Explore ...
-
 print(df['season'].value_counts())
 
 print(df['yr'].value_counts())
@@ -176,6 +209,7 @@ print(df['yr'].value_counts())
 print(df['mnth'].value_counts())
 
 print(df['holiday'].value_counts())
+
 
 print(df['weekday'].value_counts())
 
@@ -195,7 +229,6 @@ print(df['registered'].value_counts())
 ## Visualization & Explanatory Analysis
 ### Pertanyaan 1:
 ***apakah musim memperngaruhhi pengunjung?:***
-
 plt.figure(figsize=(7,5))
 
 sns.boxplot(x='season', y='cnt', data=df)
@@ -210,10 +243,11 @@ plt.show()
 
 lebih banyak mana antara pengguna tetap dengan pengguna non tetap?
 plt.figure(figsize=(7,5))
+
 sns.barplot(
     x=['Casual', 'Registered'],
     y=[df['casual'].mean(), df['registered'].mean()],
-    palette="Set2"
+palette="Set2"
 )
 plt.title("Rata-rata Jumlah Pengguna: Casual vs Registered")
 plt.ylabel("Jumlah Pengguna (rata-rata)")
@@ -230,7 +264,6 @@ print("Shape dataset:", df_hour.shape)
 print("\nStatistik deskriptif:")
 
 print(df_hour.describe())
-
 
 plt.figure(figsize=(8,5))
 
@@ -259,7 +292,6 @@ plt.xlabel("Tanggal")
 plt.ylabel("Jumlah peminjaman")
 
 plt.grid(True)
-
 plt.show()
 
 plt.figure(figsize=(8,5))
@@ -286,6 +318,7 @@ plt.ylabel("Rata-rata peminjaman")
 
 plt.show()
 
+
 plt.figure(figsize=(8,5))
 
 sns.heatmap(df_hour.corr(numeric_only=True), annot=True, cmap="coolwarm", fmt=".2f")
@@ -297,6 +330,45 @@ plt.show()
 # insight
 - biasanya hari kerja lebih tinggi karena orang pakai sepeda untuk commuting.
 - musim panas/gugur biasanya lebih tinggi dibanding musim dingin.
+
+
+Bagaimana pengaruh musim pada bisnis penyewaan sepeda?
+
+season_map = {1:'Spring', 2:'Summer', 3:'Fall', 4:'Winter'}
+day['season_name'] = day['season'].map(season_map)
+
+plt.figure(figsize=(8,5))
+
+sns.boxplot(x="season_name", y="cnt", data=day, palette="Set2")
+
+plt.title("Pengaruh Musim terhadap Penyewaan Sepeda")
+
+
+plt.xlabel("Musim")
+
+plt.ylabel("Jumlah Penyewaan")
+
+plt.show()
+
+
+day.groupby("season_name")['cnt'].mean()
+
+Pengguna mana yang lebih banyak: registered (tetap) atau casual (non tetap)?
+
+user_sum = day[['casual','registered']].sum()
+
+plt.figure(figsize=(6,5))
+
+user_sum.plot(kind='bar', color=['skyblue','orange'])
+
+plt.title("Perbandingan Total Pengguna Casual vs Registered")
+
+plt.ylabel("Jumlah Penyewaan")
+
+plt.show()
+
+user_sum
+
 ## Analisis Lanjutan (Opsional)
 
 avg_season_day = df_day.groupby("season")["cnt"].mean()
@@ -311,12 +383,11 @@ print("\nRata-rata peminjaman hari kerja (1) vs libur (0):")
 
 print(avg_workingday_day)
 
+
 avg_month_day = df_day.groupby("mnth")["cnt"].mean()
 
 plt.figure(figsize=(12,6))
-
 avg_month_day.plot(kind="bar", color="skyblue")
-
 
 plt.title("Rata-rata Peminjaman per Bulan", fontsize=14)
 
@@ -327,6 +398,7 @@ plt.ylabel("Rata-rata peminjaman")
 plt.xticks(rotation=0)
 
 plt.show()
+
 
 avg_weather_day = df_day.groupby("weathersit")["cnt"].mean()
 
@@ -347,7 +419,6 @@ plt.ylabel("Rata-rata peminjaman")
 plt.show()
 
 
-
 plt.figure(figsize=(10,6))
 
 sns.lineplot(x="dteday", y="cnt", data=df_day)
@@ -362,15 +433,12 @@ plt.show()
 
 # hour csv
 
-# 1. Rata-rata peminjaman sepeda per musim
-
 avg_season = df_hour.groupby("season")["cnt"].mean()
 
 print("Rata-rata peminjaman per musim:")
 
 print(avg_season)
 
-# 2. Rata-rata peminjaman sepeda per hari kerja vs libur
 
 avg_workingday = df_hour.groupby("workingday")["cnt"].mean()
 
@@ -379,7 +447,6 @@ print("\nRata-rata peminjaman hari kerja (1) vs libur (0):")
 print(avg_workingday)
 
 
-# 3. Rata-rata peminjaman per jam di hari kerja vs libur
 
 avg_hour_daytype = df_hour.groupby(["workingday","hr"])["cnt"].mean().unstack(0)
 
@@ -391,8 +458,8 @@ avg_hour_daytype[1].plot(label="Hari Kerja")
 
 plt.title("Rata-rata Peminjaman per Jam: Libur vs Hari Kerja", fontsize=14)
 
-plt.xlabel("Jam (0-23)")
 
+plt.xlabel("Jam (0-23)")
 
 plt.ylabel("Jumlah Peminjaman")
 
@@ -402,7 +469,6 @@ plt.grid(True)
 
 plt.show()
 
-# 4. Pengaruh cuaca terhadap peminjaman
 
 avg_weather = df_hour.groupby("weathersit")["cnt"].mean()
 
@@ -410,12 +476,12 @@ print("\nRata-rata peminjaman berdasarkan kondisi cuaca:")
 
 print(avg_weather)
 
+
 plt.figure(figsize=(8,6))
 
 sns.barplot(x="weathersit", y="cnt", data=df_hour, estimator="mean")
 
 plt.title("Rata-rata Peminjaman Sepeda Berdasarkan Cuaca", fontsize=14)
-
 
 plt.xlabel("Kondisi Cuaca (1=baik, 2=berawan, 3=hujan, 4=ekstrem)")
 
@@ -423,7 +489,7 @@ plt.ylabel("Rata-rata peminjaman")
 
 plt.show()
 
-# 5. Korelasi suhu dengan jumlah peminjaman
+
 plt.figure(figsize=(8,6))
 
 sns.scatterplot(x="temp", y="cnt", data=df_hour, alpha=0.3)
@@ -431,6 +497,7 @@ sns.scatterplot(x="temp", y="cnt", data=df_hour, alpha=0.3)
 plt.title("Hubungan Suhu dengan Jumlah Peminjaman", fontsize=14)
 
 plt.xlabel("Suhu (normalized)")
+
 
 plt.ylabel("Jumlah peminjaman")
 
@@ -442,22 +509,17 @@ Musim → peminjaman tertinggi biasanya di musim panas/gugur.
 
 Hari kerja vs libur → pola berbeda: hari kerja puncaknya pagi & sore (commuting), libur lebih merata sepanjang hari.
 
-Cuaca → cuaca buruk (hujan/ekstrem) menurunkan jumlah peminjaman drastis.
 
-Suhu → ada korelasi positif: makin hangat → makin banyak orang bersepeda.
-# download hasil dari pengolahan data yang dibuat
-
+download hasil dari pengolahan data yang dibuat
 import os
-
 os.listdir()
-# Buat arsip zip dari folder data_unzip
 
-import shutil
+import pandas as pd
 
 from google.colab import files
 
-shutil.make_archive("bike_data", 'zip', "data_unzip")
+# Download day.csv
+files.download("Bike-sharing-dataset/day.csv")
 
-# Download hasil zip
-files.download("bike_data.zip")
-[Proyek Analisis Data_ [Bike-sharing-dataset].md](https://github.com/user-attachments/files/22578528/Proyek.Analisis.Data_.Bike-sharing-dataset.md)
+# Download hour.csv
+files.download("Bike-sharing-dataset/hour.csv")
