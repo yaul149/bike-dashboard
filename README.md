@@ -202,6 +202,7 @@ print(df_hour.info())
 
 ## Exploratory Data Analysis (EDA)
 ### Explore ...
+
 print(df['season'].value_counts())
 
 print(df['yr'].value_counts())
@@ -228,7 +229,7 @@ print(df['registered'].value_counts())
 
 ## Visualization & Explanatory Analysis
 ### Pertanyaan 1:
-***apakah musim memperngaruhhi pengunjung?:***
+### apakah musim memperngaruhhi pengunjung?:
 plt.figure(figsize=(7,5))
 
 sns.boxplot(x='season', y='cnt', data=df)
@@ -241,7 +242,7 @@ plt.ylabel("Jumlah Pengguna")
 
 plt.show()
 
-lebih banyak mana antara pengguna tetap dengan pengguna non tetap?
+### lebih banyak mana antara pengguna tetap dengan pengguna non tetap?
 plt.figure(figsize=(7,5))
 
 sns.barplot(
