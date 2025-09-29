@@ -6,7 +6,6 @@
   - **Products DF** → `day.csv`
   - **Customers DF** → kolom `casual`, `registered`
   - **Sales DF** → kolom `cnt_sales`
-- Sumber data: Bike Sharing Dataset (UCI Repository)
 
 ---
 
